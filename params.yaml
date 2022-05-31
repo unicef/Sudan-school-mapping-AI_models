@@ -1,0 +1,71 @@
+models:
+  yolo:
+    run: src.yolo.run_yolo
+    params:
+      input: geotiff
+      output: output/yolo_predictions
+  tf:
+    run: src.tf.models.run_ensemble
+    params:
+      input: images2
+      output: output/tf_predictions
+  trans:
+    run: src.tf.models.run_ensemble
+    params:
+      input: images2
+      output: output/tf_predictions3
+      localizer_model_path: data/models/cnn_100k_92x92_binary_classifier.h5
+      classifier_model_path: data/models/vision_transformer_sanchit_dataset_20220404_011809_prec_0.9390_rec_0.9200.h5
+  resnet18:
+    run: src.tf.models.run_ensemble
+    params:
+      input: images4
+      output: output/resnet18_predictions
+      layers: 18
+      classes_num: 2
+      classes_weights:
+        - 0.8990921787709497
+        - 1.126421697287839
+      localizer_model_path: data/models/cnn_100k_92x92_binary_classifier.h5
+      classifier_model_path: data/models/resnet18_aye_dataset_best_val_loss_20220509_194936
+  resnet50:
+    run: src.tf.models.run_ensemble
+    params:
+      input: images4
+      output: output/resnet50_predictions
+      layers: 50
+      classes_num: 2
+      classes_weights:
+        - 0.8990921787709497
+        - 1.126421697287839
+      localizer_model_path: data/models/cnn_100k_92x92_binary_classifier.h5
+      classifier_model_path: data/models/resnet50_aye_dataset_20220424_093011
+  resnet101:
+    run: src.tf.models.run_ensemble
+    params:
+      input: images4
+      output: output/resnet101_predictions
+      layers: 101
+      classes_num: 2
+      classes_weights:
+        - 0.8990921787709497
+        - 1.126421697287839
+      localizer_model_path: data/models/cnn_100k_92x92_binary_classifier.h5
+      classifier_model_path: data/models/resnet101_aye_dataset_v3_20220424_184500
+stages:
+  preprocessing:
+    run: src.stages.preprocessing
+    params:
+      input: data/sudan_grid.geojson
+      output: geojsons
+  prediction:
+    run: src.stages.prediction
+    params:
+      model_name: yolo
+  postprocessing:
+    run: src.stages.postprocessing
+    params:
+      input: geojsons
+      model_output: model_output
+      geojson_output: geo_outputs
+

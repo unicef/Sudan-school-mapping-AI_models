@@ -1,0 +1,64 @@
+######################################
+# Set variables
+######################################
+
+###################
+# yoltv5 input file variables
+yoltv5_path: /src/yolo/YOLTv5 # path to YOLTv5 source folder
+# object name variables (object names should be in order)
+name_file_name: 'yoltv5_1class.name'
+object_names: 
+- 'School'
+
+###################
+# image slicing variables
+data_root: /data # absolute path
+
+# test image folder
+test_im_dir: /data/test_images # absolute path to test images
+src_geojson_dir: /data/src_geojson # folder containing geojson files to be used for geo-referencing
+orig_geojson_file: /data/sudan_grid.geojson # geojson file containing geo-coordinates for all image tiles
+sliceHeight: 256
+sliceWidth: 256
+slice_overlap: 0.2
+im_ext: '.png'
+out_ext: '.png'
+
+# shouldn't need changed below here
+skip_highly_overlapped_tiles: False
+slice_verbose: False
+n_threads_slice: 8
+slice_sep: '__'
+slice_overwrite: False
+outdir_slice_root: yoltv5 # ../exp/batch_1/yoltv5
+outdir_slice_ims: images_slice # ../exp/batch_1/images_slice
+outdir_slice_txt: txt # ../exp/batch_1/txt
+outpath_test_txt: test.txt # ../exp/batch_1/test.txt
+
+###################
+# inference variables
+outname_infer: 'yoltv5_school'
+project_folder: ../exp/batch_1 # model prediction files will be generated in this folder
+outproject_infer: yolov5_infer_output # folder for yolov5 prediction text files
+results_folder: results # folder for bounding box predictions geojson files. (dir = "../exp/batch_1/results")
+weights_file: ../weights/last.pt # model weight file
+
+train_im_size: 256
+
+###################
+# post-process variables
+detection_threshes:
+- 0.6
+
+nms_overlap_thresh: 0.3
+max_edge_aspect_ratio: 5
+n_plots: 4
+allow_nested_detections: True
+truth_file: '' # os.path.join(data_root, 'test', 'geojsons_geo', 'truth.geojson')
+# seldom changed below here
+extract_chips: False
+chip_rescale_frac: 1.1
+chip_ext: '.png'
+edge_buffer_test: 0 # If a bounding box is within this distance from the edge, discard.
+max_bbox_size: 250
+
